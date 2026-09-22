@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ATSC Membership Signup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2F4EF;
+    --surface: #FFFFFF;
+    --ink: #1B2622;
+    --ink-soft: #55625B;
+    --line: #D9DED4;
+    --primary: #17392F;
+    --primary-ink: #FFFFFF;
+    --accent: #C1561F;
+    --accent-soft: #F3E2D3;
+    --field-bg: #FAFBF8;
+    --error: #B3311C;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121712;
+      --surface: #1A2119;
+      --ink: #ECEFE8;
+      --ink-soft: #A7B0A2;
+      --line: #303930;
+      --primary: #4A8C74;
+      --primary-ink: #0D1310;
+      --accent: #E08A4C;
+      --accent-soft: #2A2019;
+      --field-bg: #1F271E;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121712;
+    --surface: #1A2119;
+    --ink: #ECEFE8;
+    --ink-soft: #A7B0A2;
+    --line: #303930;
+    --primary: #4A8C74;
+    --primary-ink: #0D1310;
+    --accent: #E08A4C;
+    --accent-soft: #2A2019;
+    --field-bg: #1F271E;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Work Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 20px 80px;
+  }
+  header.hero {
+    margin-bottom: 36px;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0 0 6px;
+  }
+  h1 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2.1rem, 6vw, 2.9rem);
+    line-height: 1.05;
+    margin: 0 0 14px;
+    color: var(--primary);
+    letter-spacing: -0.01em;
+  }
+  .lede {
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 46ch;
+    margin: 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 32px;
+  }
+  .card + .card { margin-top: 20px; }
+  section + section { margin-top: 32px; }
+  h2 {
+    font-family: "Fraunces", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.3rem;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .section-hint {
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    margin: 0 0 20px;
+  }
+  label.field {
+    display: block;
+    margin-bottom: 18px;
+  }
+  label.field:last-child { margin-bottom: 0; }
+  .field-label {
+    display: block;
+    font-weight: 500;
+    font-size: 0.92rem;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .field-label .opt {
+    color: var(--ink-soft);
+    font-weight: 400;
+  }
+  input[type="text"], input[type="email"], input[type="tel"], input[type="number"] {
+    width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--field-bg);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.98rem;
+  }
+  input:focus, .opt-card:focus-within, button:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  @media (max-width: 480px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+  .opt-group {
+    display: grid;
+    gap: 10px;
+  }
+  .opt-card {
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    cursor: pointer;
+    background: var(--field-bg);
+  }
+  .opt-card input[type="radio"] {
+    margin-top: 3px;
+    accent-color: var(--primary);
+    width: 17px;
+    height: 17px;
+    flex: none;
+  }
+  .opt-card.selected {
+    border-color: var(--primary);
+    background: color-mix(in srgb, var(--primary) 7%, var(--field-bg));
+  }
+  .opt-title {
+    font-weight: 600;
+    font-size: 0.98rem;
+  }
+  .opt-desc {
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    margin-top: 2px;
+  }
+  .opt-price {
+    margin-left: auto;
+    font-weight: 600;
+    color: var(--primary);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .subpanel {
+    margin-top: 14px;
+    padding: 16px;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    border: 1px solid var(--line);
+  }
+  .subpanel .field-label { margin-bottom: 10px; }
+  .toggle-row {
+    display: flex;
+    gap: 10px;
+  }
+  .toggle-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .toggle-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: var(--primary-ink);
+  }
+  .price-note {
+    margin-top: 12px;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+  }
+  .price-note strong { color: var(--ink); }
+  .family-grid {
+    margin-top: 14px;
+    display: grid;
+    gap: 10px;
+  }
+  .family-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .family-row input {
+    flex: 1;
+  }
+  .remove-row {
+    flex: none;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-soft);
+    font-size: 1.15rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  button.secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  fieldset {
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+  .submit-row {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  button.primary {
+    background: var(--primary);
+    color: var(--primary-ink);
+    border: none;
+    border-radius: 9px;
+    padding: 15px 20px;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 1.02rem;
+    cursor: pointer;
+  }
+  button.primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  button.secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    padding: 12px 20px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.94rem;
+    cursor: pointer;
+  }
+  .status {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    min-height: 1.2em;
+  }
+  .status.error { color: var(--error); }
+  .footer-note {
+    margin-top: 28px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-align: center;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="eyebrow">Auckland Tamil Sports Club</p>
+    <h1>Join the club</h1>
+    <p class="lede">One form covers general club membership and badminton full membership. Fill in your details below - we'll follow up with payment instructions once we receive your form.</p>
+  </header>
+
+  <form id="signupForm">
+    <div class="card">
+      <section>
+        <h2>Your details</h2>
+        <p class="section-hint">Whoever's signing up / the primary contact for a family membership.</p>
+        <label class="field">
+          <span class="field-label">Full name</span>
+          <input type="text" id="fullName" required autocomplete="name">
+        </label>
+        <div class="two-col">
+          <label class="field">
+            <span class="field-label">Email</span>
+            <input type="email" id="email" required autocomplete="email">
+          </label>
+          <label class="field">
+            <span class="field-label">Phone</span>
+            <input type="tel" id="phone" required autocomplete="tel">
+          </label>
+        </div>
+      </section>
+    </div>
+
+    <div class="card">
+      <section>
+        <h2>Membership</h2>
+        <p class="section-hint">General membership covers every sport under the club banner. Badminton full membership is separate and only needed if you don't want to pay the $8/$14 weekly rate on Sundays.</p>
+        <fieldset class="opt-group" id="membershipOptions">
+          <label class="opt-card" data-value="general-single">
+            <input type="radio" name="membership" value="general-single">
+            <div>
+              <div class="opt-title">General membership: Single</div>
+              <div class="opt-desc">Play any club sport under the ATSC banner.</div>
+            </div>
+            <div class="opt-price">$25</div>
+          </label>
+          <label class="opt-card" data-value="general-family">
+            <input type="radio" name="membership" value="general-family">
+            <div>
+              <div class="opt-title">General membership: Family</div>
+              <div class="opt-desc">2 parents + up to 2 kids (18 or under).</div>
+            </div>
+            <div class="opt-price">$50</div>
+          </label>
+          <label class="opt-card" data-value="badminton-single">
+            <input type="radio" name="membership" value="badminton-single">
+            <div>
+              <div class="opt-title">Badminton full membership: Single</div>
+              <div class="opt-desc">No weekly fee: covers every Sunday clubnight.</div>
+            </div>
+            <div class="opt-price" id="priceBadmintonSingle">from $130</div>
+          </label>
+          <label class="opt-card" data-value="badminton-family">
+            <input type="radio" name="membership" value="badminton-family">
+            <div>
+              <div class="opt-title">Badminton full membership: Family</div>
+              <div class="opt-desc">No weekly fee: covers every Sunday clubnight.</div>
+            </div>
+            <div class="opt-price" id="priceBadmintonFamily">from $260</div>
+          </label>
+        </fieldset>
+
+        <div class="subpanel hidden" id="renewalPanel">
+          <span class="field-label">Have you been playing as a full badminton member since April 2026 without renewing?</span>
+          <div class="toggle-row">
+            <button type="button" class="toggle-btn" id="renewalYes">Yes, I'm continuing on</button>
+            <button type="button" class="toggle-btn" id="renewalNo">No, I'm signing up fresh</button>
+          </div>
+          <p class="price-note" id="renewalNote">Select one to see your rate.</p>
+        </div>
+
+        <div class="subpanel hidden" id="familyPanel">
+          <span class="field-label">Family members <span class="opt">(add up to 3 more: a family membership covers 2 parents + up to 2 kids under 18)</span></span>
+          <div class="family-grid" id="familyRows"></div>
+          <button type="button" class="secondary" id="addFamilyBtn" style="margin-top:12px;">+ Add family member</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="primary" id="submitBtn" disabled>Send sign-up</button>
+      <button type="button" class="secondary" id="copyBtn">Copy details instead</button>
+      <p class="status" id="statusMsg"></p>
+    </div>
+  </form>
+
+  <p class="footer-note">Feel free to reach out to the committee if you have any questions!</p>
+</div>
+
+<script>
+  // Replace with the address that should receive sign-ups.
+  const RECIPIENT_EMAIL = "aucklandtamilsportsclub@gmail.com";
+
+  const FULL_PRICE = { single: 260, family: 520 };
+  const NEW_PRICE = { single: 130, family: 260 };
+
+  const form = document.getElementById('signupForm');
+  const options = document.querySelectorAll('#membershipOptions .opt-card');
+  const renewalPanel = document.getElementById('renewalPanel');
+  const familyPanel = document.getElementById('familyPanel');
+  const renewalYes = document.getElementById('renewalYes');
+  const renewalNo = document.getElementById('renewalNo');
+  const renewalNote = document.getElementById('renewalNote');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  const familyRows = document.getElementById('familyRows');
+  const addFamilyBtn = document.getElementById('addFamilyBtn');
+  const MAX_FAMILY_ROWS = 3;
+
+  let renewalChoice = null; // 'continuing' | 'new'
+
+  function updateAddFamilyBtn() {
+    const atCap = familyRows.children.length >= MAX_FAMILY_ROWS;
+    addFamilyBtn.disabled = atCap;
+    addFamilyBtn.textContent = atCap ? 'Family member limit reached' : '+ Add family member';
+  }
+
+  function addFamilyRow() {
+    if (familyRows.children.length >= MAX_FAMILY_ROWS) return;
+    const row = document.createElement('div');
+    row.className = 'family-row';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.className = 'family-name';
+    input.placeholder = 'Family member name & age (if under 18)';
+    const removeBtn = document.createElement('button');
+    removeBtn.type = 'button';
+    removeBtn.className = 'remove-row';
+    removeBtn.setAttribute('aria-label', 'Remove family member');
+    removeBtn.textContent = '\u00D7';
+    removeBtn.addEventListener('click', () => {
+      row.remove();
+      updateAddFamilyBtn();
+    });
+    row.appendChild(input);
+    row.appendChild(removeBtn);
+    familyRows.appendChild(row);
+    updateAddFamilyBtn();
+  }
+
+  addFamilyBtn.addEventListener('click', addFamilyRow);
+
+  function fmt(n) { return '$' + n; }
+
+  function currentMembership() {
+    const checked = form.querySelector('input[name="membership"]:checked');
+    return checked ? checked.value : null;
+  }
+
+  function isBadminton(v) { return v === 'badminton-single' || v === 'badminton-family'; }
+  function isFamily(v) { return v === 'general-family' || v === 'badminton-family'; }
+
+  function updatePrices() {
+    document.getElementById('priceBadmintonSingle').textContent = renewalChoice === 'continuing'
+      ? fmt(FULL_PRICE.single) : (renewalChoice === 'new' ? fmt(NEW_PRICE.single) : 'from ' + fmt(NEW_PRICE.single));
+    document.getElementById('priceBadmintonFamily').textContent = renewalChoice === 'continuing'
+      ? fmt(FULL_PRICE.family) : (renewalChoice === 'new' ? fmt(NEW_PRICE.family) : 'from ' + fmt(NEW_PRICE.family));
+  }
+
+  function refreshPanels() {
+    const v = currentMembership();
+    options.forEach(o => o.classList.toggle('selected', o.dataset.value === v));
+
+    if (isBadminton(v)) {
+      renewalPanel.classList.remove('hidden');
+    } else {
+      renewalPanel.classList.add('hidden');
+      renewalChoice = null;
+      renewalYes.classList.remove('active');
+      renewalNo.classList.remove('active');
+      renewalNote.textContent = 'Select one to see your rate.';
+    }
+
+    const familyOn = isFamily(v);
+    familyPanel.classList.toggle('hidden', !familyOn);
+    if (familyOn && familyRows.children.length === 0) addFamilyRow();
+    updatePrices();
+    validate();
+  }
+
+  options.forEach(o => o.addEventListener('click', () => {
+    o.querySelector('input[type="radio"]').checked = true;
+    refreshPanels();
+  }));
+
+  renewalYes.addEventListener('click', () => {
+    renewalChoice = 'continuing';
+    renewalYes.classList.add('active');
+    renewalNo.classList.remove('active');
+    renewalNote.innerHTML = '<strong>Full price applies</strong> — this covers uncollected fees from earlier in the year.';
+    updatePrices();
+    validate();
+  });
+  renewalNo.addEventListener('click', () => {
+    renewalChoice = 'new';
+    renewalNo.classList.add('active');
+    renewalYes.classList.remove('active');
+    renewalNote.innerHTML = '<strong>Half-price rate applies</strong> — this covers you through 31 March 2027 (~6 months).';
+    updatePrices();
+    validate();
+  });
+
+  function validate() {
+    const v = currentMembership();
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    let ok = Boolean(v && name && email && phone);
+    if (isBadminton(v) && !renewalChoice) ok = false;
+    submitBtn.disabled = !ok;
+    return ok;
+  }
+
+  ['fullName', 'email', 'phone'].forEach(id => {
+    document.getElementById(id).addEventListener('input', validate);
+  });
+
+  function membershipLabel(v) {
+    return {
+      'general-single': 'General membership — Single ($25)',
+      'general-family': 'General membership — Family ($50)',
+      'badminton-single': 'Badminton full membership — Single',
+      'badminton-family': 'Badminton full membership — Family',
+    }[v] || '';
+  }
+
+  function buildSummary() {
+    const v = currentMembership();
+    const name = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    let membershipLine = membershipLabel(v);
+    if (isBadminton(v)) {
+      const size = v === 'badminton-family' ? 'family' : 'single';
+      const price = renewalChoice === 'continuing' ? FULL_PRICE[size] : NEW_PRICE[size];
+      membershipLine += ' — ' + (renewalChoice === 'continuing' ? fmt(price) + ' (continuing full member)' : fmt(price) + ' (new full member, covers to 31 Mar 2027)');
+    }
+
+    const lines = [
+      'New ATSC membership sign-up',
+      '',
+      'Name: ' + name,
+      'Email: ' + email,
+      'Phone: ' + phone,
+      'Membership: ' + membershipLine,
+    ];
+
+    if (isFamily(v)) {
+      const names = Array.from(document.querySelectorAll('.family-name'))
+        .map(i => i.value.trim())
+        .filter(Boolean);
+      lines.push('');
+      lines.push('Family members:');
+      if (names.length) {
+        names.forEach(n => lines.push('- ' + n));
+      } else {
+        lines.push('- (none listed)');
+      }
+    }
+
+    return lines.join('\n');
+  }
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!validate()) {
+      statusMsg.textContent = 'Please fill in every field and choose a membership option.';
+      statusMsg.classList.add('error');
+      return;
+    }
+    const summary = buildSummary();
+    const subject = encodeURIComponent('ATSC membership sign-up — ' + document.getElementById('fullName').value.trim());
+    const body = encodeURIComponent(summary);
+    statusMsg.classList.remove('error');
+    statusMsg.textContent = 'Opening your email app…';
+    window.location.href = 'mailto:' + RECIPIENT_EMAIL + '?subject=' + subject + '&body=' + body;
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const summary = buildSummary();
+    try {
+      await navigator.clipboard.writeText(summary);
+      statusMsg.classList.remove('error');
+      statusMsg.textContent = 'Copied — paste it into a message to the club.';
+    } catch (err) {
+      statusMsg.classList.add('error');
+      statusMsg.textContent = 'Couldn\'t copy automatically — select and copy the summary manually.';
+    }
+  });
+</script>
+</body>
+</html>
